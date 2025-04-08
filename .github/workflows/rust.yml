@@ -16,6 +16,7 @@ jobs:
 
     container:
       image: espressif/idf-rust:esp32_latest
+      options: --user root
 
     steps:
     - name: Checkout repo
