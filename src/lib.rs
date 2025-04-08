@@ -1,4 +1,4 @@
-use std::sync::Arc;
+use std::boxed::Box;
 use wamr_rust_sdk::RuntimeError;
 use wamr_rust_sdk::function::Function;
 use wamr_rust_sdk::instance::Instance;
@@ -44,9 +44,9 @@ impl<'instance> FunctionCaller<'instance> {
 }
 
 unsafe extern "C" fn raw_fncaller(mut _arg: *mut std::ffi::c_void) -> *mut std::ffi::c_void {
-    let instance_data = unsafe { Arc::from_raw(_arg as *const FunctionCaller) };
-    let ret: Arc<Result<Vec<WasmValue>, RuntimeError>> = Arc::new(instance_data.call());
-    Arc::into_raw(ret) as *mut std::ffi::c_void
+    let instance_data = unsafe { Box::from_raw(_arg as *mut FunctionCaller) };
+    let ret: Box<Result<Vec<WasmValue>, RuntimeError>> = Box::new(instance_data.call());
+    Box::into_raw(ret) as *mut std::ffi::c_void
 }
 
 impl<'instance> PThreadExtension<'instance> for Function<'instance> {
@@ -106,7 +106,7 @@ impl<'instance> PThreadExtension<'instance> for Function<'instance> {
             instance,
             params,
         };
-        let ptr_fncaller = Arc::into_raw(Arc::new(fncaller)) as *mut std::ffi::c_void;
+        let ptr_fncaller = Box::into_raw(Box::new(fncaller)) as *mut std::ffi::c_void;
 
         let res = unsafe {
             esp_idf_svc::sys::pthread_create(&mut thread, &attr, Some(raw_fncaller), ptr_fncaller)
@@ -128,8 +128,8 @@ impl<'instance> PThreadExtension<'instance> for Function<'instance> {
                     }));
                 }
                 let instance_data =
-                    Arc::from_raw(raw_ret as *const Result<Vec<WasmValue>, RuntimeError>);
-                return Arc::try_unwrap(instance_data).unwrap();
+                    Box::from_raw(raw_ret as *mut Result<Vec<WasmValue>, RuntimeError>);
+                return *instance_data;
             }
         }
     }
