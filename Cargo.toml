@@ -1,0 +1,8 @@
+[package]
+name = "wamr-rust-pthreadcall"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+wamr-rust-sdk = { git = "https://github.com/bytecodealliance/wamr-rust-sdk", features = ["esp-idf"] }
+esp-idf-svc = { version = "0.51", features = ["critical-section", "embassy-time-driver", "embassy-sync"] }
