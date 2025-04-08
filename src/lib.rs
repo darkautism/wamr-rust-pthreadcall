@@ -44,8 +44,8 @@ impl<'instance> FunctionCaller<'instance> {
 }
 
 unsafe extern "C" fn raw_fncaller(mut _arg: *mut std::ffi::c_void) -> *mut std::ffi::c_void {
-    let instance_data = unsafe { Box::from_raw(_arg as *mut FunctionCaller) };
-    let ret: Box<Result<Vec<WasmValue>, RuntimeError>> = Box::new(instance_data.call());
+    let fncaller = unsafe { Box::from_raw(_arg as *mut FunctionCaller) };
+    let ret: Box<Result<Vec<WasmValue>, RuntimeError>> = Box::new(fncaller.call());
     Box::into_raw(ret) as *mut std::ffi::c_void
 }
 
@@ -127,6 +127,7 @@ impl<'instance> PThreadExtension<'instance> for Function<'instance> {
                         exit_code: join_ret.abs() as u32,
                     }));
                 }
+
                 let instance_data =
                     Box::from_raw(raw_ret as *mut Result<Vec<WasmValue>, RuntimeError>);
                 return *instance_data;
