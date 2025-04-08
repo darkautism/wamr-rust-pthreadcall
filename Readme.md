@@ -1,4 +1,4 @@
-# Wamr-rust-pthreadcall
+# Wamr-rust-pthreadcall [![dependency status](https://deps.rs/repo/github/darkautism/wamr-rust-pthreadcall/status.svg)](https://deps.rs/repo/github/darkautism/wamr-rust-pthreadcall)
 This library makes it easier to integrate WAMR into ESP32, allowing you to focus on application logic without dealing with underlying pthread issues.
 
 ## Background and Problem
