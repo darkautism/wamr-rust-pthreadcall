@@ -15,8 +15,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - uses: espressif/esp-idf-ci-action@v1
+    - name: Checkout repo
+      uses: actions/checkout@v4
+      with:
+        submodules: 'recursive'
+    - name: Build
+      uses: espressif/esp-idf-ci-action@v1
       with:
         esp_idf_version: esp32_latest
         esp_idf_docker_image: espressif/idf-rust
