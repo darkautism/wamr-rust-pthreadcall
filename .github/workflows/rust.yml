@@ -19,6 +19,8 @@ jobs:
       with:
         esp_idf_version: esp32_latest
         esp_idf_docker_image: espressif/idf-rust
+        command: true
+    - uses: actions/checkout@v4
     - name: RustDoc
       run: cargo doc --verbose
     - name: Build
