@@ -2,6 +2,10 @@
 name = "wamr-rust-pthreadcall"
 version = "0.1.0"
 edition = "2024"
+description = "This library makes it easier to integrate WAMR into ESP32, allowing you to focus on application logic without dealing with underlying pthread issues."
+homepage = "https://github.com/darkautism/wamr-rust-pthreadcall"
+license = "MIT"
+
 
 [dependencies]
 wamr-rust-sdk = { git = "https://github.com/bytecodealliance/wamr-rust-sdk", features = ["esp-idf"] }
