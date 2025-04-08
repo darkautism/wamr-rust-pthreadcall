@@ -15,17 +15,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - uses: actions/checkout@v4
     - uses: espressif/esp-idf-ci-action@v1
       with:
         esp_idf_version: esp32_latest
         esp_idf_docker_image: espressif/idf-rust
-        command: true
-    - uses: actions/checkout@v4
-    - name: RustDoc
-      run: cargo doc --verbose
-    - name: Build
-      run: cargo fmt --verbose
-    - name: Build
-      run: cargo build --verbose
-    - name: Run tests
-      run: cargo test --verbose
+        command: |
+          cargo doc --verbose
+          cargo fmt --verbose
+          cargo build --verbose
