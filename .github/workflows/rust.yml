@@ -23,7 +23,9 @@ jobs:
       with:
         esp_idf_version: esp32_latest
         esp_idf_docker_image: espressif/idf-rust
-        command: cargo doc --verbose
+        command: |
+          chown -R $(whoami) .
+          cargo doc --verbose
     - name: Rustfmt
       uses: espressif/esp-idf-ci-action@v1
       with:
