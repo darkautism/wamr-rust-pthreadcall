@@ -13,11 +13,6 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
-    container:
-      image: espressif/idf-rust:esp32_latest
-      options: --user root
-
     steps:
     - name: Checkout repo
       uses: actions/checkout@v4
