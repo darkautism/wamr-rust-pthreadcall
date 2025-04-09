@@ -23,16 +23,16 @@ jobs:
       with:
         esp_idf_version: esp32_latest
         esp_idf_docker_image: espressif/idf-rust
-        command: sudo cargo doc --verbose
+        command: cargo doc --verbose
     - name: Rustfmt
       uses: espressif/esp-idf-ci-action@v1
       with:
         esp_idf_version: esp32_latest
         esp_idf_docker_image: espressif/idf-rust
-        command: sudo cargo fmt --verbose
+        command: cargo fmt --verbose
     - name: RustBuild
       uses: espressif/esp-idf-ci-action@v1
       with:
         esp_idf_version: esp32_latest
         esp_idf_docker_image: espressif/idf-rust
-        command: sudo cargo Build --verbose
+        command: cargo Build --verbose
