@@ -38,4 +38,52 @@ let result = function
 log::info!("Program exited with code: {:?}", result);
 ```
 
+If your need more object running into pthread, you can use another function:
+
+```rust
+    let a: Result<Vec<WasmValue>, RuntimeError> =
+    wamr_rust_pthreadcall::call_pthread(4096, move || {
+        let runtime = match Runtime::builder()
+            .use_system_allocator()
+            .register_host_function(
+                "vTaskDelay",
+                esp_idf_svc::sys::vTaskDelay as *mut std::ffi::c_void,
+            )
+            .build()
+        {
+            Ok(runtime) => runtime,
+            Err(e) => {
+                log::error!("Failed to load WAMR runtime: {}", e);
+                return Err(e);
+            }
+        };
+        let module = match Module::from_file(&runtime, d.as_path()) {
+            Ok(module) => module,
+            Err(e) => {
+                log::error!("Failed to load WAMR module: {}", e);
+                return Err(e);
+            }
+        };
+
+        let instance = match Instance::new(&runtime, &module, config::GAMEMEMORY) {
+            Ok(instance) => instance,
+            Err(e) => {
+                log::error!("Failed to create WAMR instance: {}", e);
+                return Err(e);
+            }
+        };
+
+        let function = match Function::find_export_func(&instance, config::ENTRYPOINT) {
+            Ok(function) => function,
+            Err(e) => {
+                log::error!("Failed to find WAMR function: {}", e);
+                return Err(e);
+            }
+        };
+        let params: Vec<WasmValue> = vec![];
+        function.call(&instance, &params)
+    })
+    .expect("Pthread create failed");
+```
+
 This way, the library automatically handles the creation and management of pthreads, ensuring WebAssembly functions are executed in the correct context.

@@ -8,5 +8,5 @@ license = "MIT"
 
 
 [dependencies]
-wamr-rust-sdk = { git = "https://github.com/bytecodealliance/wamr-rust-sdk", features = ["esp-idf"] }
+wamr-rust-sdk = { path = "../wamr-rust-sdk", features = ["esp-idf"] }
 esp-idf-svc = { version = "0.51", features = ["critical-section", "embassy-time-driver", "embassy-sync"] }
