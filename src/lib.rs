@@ -148,7 +148,7 @@ struct ClosureWrapper {
 // pthread 回調函數
 unsafe extern "C" fn raw_closurescaller(arg: *mut c_void) -> *mut c_void {
     let wrapper = unsafe { Box::from_raw(arg as *mut ClosureWrapper) };
-    let result: Box<dyn Any + Send> = (wrapper.closure)(); // 呼叫閉包
+    let result = (wrapper.closure)(); // 呼叫閉包
     Box::into_raw(result) as *mut c_void
 }
 
@@ -256,14 +256,8 @@ where
                 }));
             }
 
-            let boxed_result: Box<dyn Any + Send> = Box::from_raw(raw_ret as *mut _);
-            let result_boxed_t: Box<T> = boxed_result.downcast::<T>().map_err(|_| {
-                RuntimeError::ExecutionError(wamr_rust_sdk::ExecError {
-                    message: "Type mismatch in thread result".to_string(),
-                    exit_code: 1,
-                })
-            })?;
-            Ok(*result_boxed_t)
+            let boxed_result: Box<T> = Box::from_raw(raw_ret as *mut _);
+            Ok(*boxed_result)
         }
     }
 }
