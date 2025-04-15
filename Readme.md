@@ -20,7 +20,7 @@ Using this library is straightforward. First, add the dependency in your ```Carg
 ```toml
 
 [dependencies]
-wamr-rust-pthreadcall = "0.1.0"
+wamr-rust-pthreadcall = { git="https://github.com/darkautism/wamr-rust-pthreadcall.git" }
 ```
 
 Then, in your Rust code, use ```call_pthread``` to replace the original ```call``` method. Here's an example:
